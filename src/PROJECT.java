@@ -32,7 +32,13 @@ public class d6HW {
             System.out.println("4. Exit Program");
             System.out.print("Choice: ");
 
-            int choice = Integer.parseInt(sc.nextLine().trim());
+            int choice = -1; // default invalid
+            try {
+                choice = Integer.parseInt(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid choice!!!");
+                continue; // restart loop
+            }
 
             switch (choice) {
                 case 1 -> create();
@@ -44,20 +50,30 @@ public class d6HW {
         }
     }
 
-    // Create employees
     static void create() {
         String again;
         do {
             String name;
             do {
-                System.out.print("Enter name (max 2 spaces allowed): ");
+                System.out.print("Enter name (max 2 spaces allowed, only alphabets): ");
                 name = sc.nextLine();
-            } while (countSpaces(name) > 2);
+
+                // Validation: only alphabets and spaces allowed
+                if (!name.matches("[a-zA-Z ]+")) {
+                    System.out.println("Invalid name. Please enter valid alphabets only.");
+                    name = ""; // force retry
+                }
+            } while (countSpaces(name) > 2 || name.isEmpty());
 
             int age;
             do {
                 System.out.print("Enter age (18-60): ");
-                age = Integer.parseInt(sc.nextLine().trim());
+                try {
+                    age = Integer.parseInt(sc.nextLine().trim());
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid age. Please enter a number.");
+                    age = -1; // force retry
+                }
             } while (age < 18 || age > 60);
 
             String designation;
@@ -95,7 +111,6 @@ public class d6HW {
         return count;
     }
 
-    // Display employees
     static void display() {
         if (employees.isEmpty()) {
             System.out.println("No employees available.");
@@ -109,7 +124,6 @@ public class d6HW {
         }
     }
 
-    // Raise salary
     static void raiseSalary() {
         if (employees.isEmpty()) {
             System.out.println("No employees available.");
@@ -129,17 +143,21 @@ public class d6HW {
             return;
         }
 
-        double percent;
+        double percent = -1;
         do {
             System.out.print("Enter raise percentage (1-10): ");
-            percent = Double.parseDouble(sc.nextLine().trim());
+            try {
+                percent = Double.parseDouble(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                percent = -1;
+            }
         } while (percent < 1 || percent > 10);
 
         found.salary += found.salary * percent / 100;
         System.out.println("Updated salary of " + found.name + " is " + found.salary);
     }
 
-    // Exit program
     static void exit() {
         System.out.print("Confirm exit? (yes/no): ");
         String confirm = sc.nextLine().trim();
