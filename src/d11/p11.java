@@ -1,0 +1,15 @@
+package d11;
+public class p11 {
+	
+	public static void main(String[] args) {
+		int[][] matrix= {{1,2,3},{4,5,6}};
+		System.out.println("transpose:");
+		for(int j=0;j<3;j++) {
+			for(int i=0;i<2;i++) {
+				System.out.print(matrix[i][j]+" ");
+			}
+			System.out.println();
+		}
+	}
+
+}
